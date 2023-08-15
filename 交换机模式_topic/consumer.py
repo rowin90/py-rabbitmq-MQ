@@ -4,25 +4,21 @@ import pika
 connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
 channel = connection.channel()
 #  创建交换机
-channel.exchange_declare(exchange='logs2',
-                         exchange_type='direct')
+channel.exchange_declare(exchange='logs3',
+                         exchange_type='topic')
 
 # 创建队列
 result = channel.queue_declare("",exclusive=True)
 queue_name = result.method.queue
 
 # 绑定交换机
-channel.queue_bind(exchange='logs2',
-                   routing_key='info',
+channel.queue_bind(exchange='logs3',
+                   routing_key='#.weather',
                    queue=queue_name)
 
-channel.queue_bind(exchange='logs2',
-                   routing_key='warning',
-                   queue=queue_name)
-
-channel.queue_bind(exchange='logs2',
-                   routing_key='success',
-                   queue=queue_name)
+# channel.queue_bind(exchange='logs3',
+#                    routing_key='use.#',
+#                    queue=queue_name)
 
 def callback(ch, method, properties, body):
     print(" [x] Received %r" % body)

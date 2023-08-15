@@ -20,7 +20,7 @@ def callback(ch, method, properties, body):
 
 
 # 确定定义监听
-channel.basic_consume(queue='hello',
+channel.basic_consume(queue=queue_name,
                       auto_ack=True,
                       on_message_callback=callback)
 
